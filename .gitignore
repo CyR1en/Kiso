@@ -98,3 +98,4 @@ gen### Java template
 hs_err_pid*
 !/gradle/wrapper/gradle-wrapper.properties
 
+!/gradle/wrapper/gradle-wrapper.jar
