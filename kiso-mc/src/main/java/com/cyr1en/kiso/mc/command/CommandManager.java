@@ -122,4 +122,50 @@ public class CommandManager implements CommandExecutor {
     }
     return pdl;
   }
+
+  public static class Builder {
+    private JavaPlugin plugin;
+    private Function<CommandManager, Boolean> fallBack;
+    private String prefix, playerOnlyMessage, commandInvalidMessage;
+
+    public Builder() {
+      plugin = null;
+      fallBack = (cm) -> false;
+      prefix = playerOnlyMessage = commandInvalidMessage = "";
+    }
+
+    public Builder plugin(JavaPlugin plugin) {
+      this.plugin = plugin;
+      return this;
+    }
+
+    public Builder setFallBack(Function<CommandManager, Boolean> fallBack) {
+      this.fallBack = fallBack;
+      return this;
+    }
+
+    public Builder setPrefix(String prefix) {
+      this.prefix = prefix;
+      return this;
+    }
+
+    public Builder setPlayerOnlyMessage(String playerOnlyMessage) {
+      this.playerOnlyMessage = playerOnlyMessage;
+      return this;
+    }
+
+    public Builder setCommandInvalidMessage(String commandInvalidMessage) {
+      this.commandInvalidMessage = commandInvalidMessage;
+      return this;
+    }
+
+    public CommandManager build() {
+      assertPluginNotNull();
+      return new CommandManager(plugin, fallBack, prefix, playerOnlyMessage, commandInvalidMessage);
+    }
+
+    private void assertPluginNotNull() {
+      if(Objects.isNull(plugin)) throw new NullPointerException("JavaPlugin instance must be provided.");
+    }
+  }
 }
