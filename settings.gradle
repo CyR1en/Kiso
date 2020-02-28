@@ -1,0 +1,4 @@
+rootProject.name = 'Kiso'
+include 'kiso-utils'
+include 'kiso-mc'
+

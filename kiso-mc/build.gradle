@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url 'https://repo.codemc.org/repository/maven-public'}
+}
+
+dependencies {
+    compile 'org.atteo.classindex:classindex:3.6'
+    annotationProcessor 'org.atteo.classindex:classindex:3.6'
+
+    compileOnly project(':kiso-utils')
+
+    compileOnly 'org.spigotmc:spigot-api:1.15.1-R0.1-SNAPSHOT'
+}
