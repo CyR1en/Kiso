@@ -27,6 +27,7 @@ package com.cyr1en.kiso.mc.command;
 import com.cyr1en.kiso.utils.FastStrings;
 import com.cyr1en.kiso.utils.FileUtil;
 import com.cyr1en.kiso.utils.KisoArray;
+import com.cyr1en.kiso.utils.TriFunction;
 import com.google.common.collect.Lists;
 import org.bukkit.command.*;
 import org.bukkit.plugin.InvalidDescriptionException;
@@ -56,9 +57,9 @@ public class CommandManager implements CommandExecutor {
 
   private List<AbstractCommand> commands;
 
-  private Function<CommandManager, Boolean> fallBack;
+  private TriFunction<CommandSender, Command, String[], Boolean> fallBack;
 
-  private CommandManager(JavaPlugin plugin, Function<CommandManager, Boolean> fallBack, String prefix, String playerOnlyMessage, String commandInvalidMessage) {
+  private CommandManager(JavaPlugin plugin,  TriFunction<CommandSender, Command, String[], Boolean> fallBack, String prefix, String playerOnlyMessage, String commandInvalidMessage) {
     this.plugin = plugin;
     commands = Lists.newArrayList();
     this.fallBack = fallBack;
@@ -94,7 +95,7 @@ public class CommandManager implements CommandExecutor {
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     if (args.length == 0)
-      return fallBack.apply(this);
+      return fallBack.apply(sender, command, args);
 
     for (AbstractCommand cmd : commands)
       if (args[0].equalsIgnoreCase(cmd.getName()) || KisoArray.of(cmd.getAlias()).contains(args[0])) {
@@ -125,12 +126,12 @@ public class CommandManager implements CommandExecutor {
 
   public static class Builder {
     private JavaPlugin plugin;
-    private Function<CommandManager, Boolean> fallBack;
+    private  TriFunction<CommandSender, Command, String[], Boolean> fallBack;
     private String prefix, playerOnlyMessage, commandInvalidMessage;
 
     public Builder() {
       plugin = null;
-      fallBack = (cm) -> false;
+      fallBack = (cs, c, a) -> false;
       prefix = playerOnlyMessage = commandInvalidMessage = "";
     }
 
@@ -139,7 +140,7 @@ public class CommandManager implements CommandExecutor {
       return this;
     }
 
-    public Builder setFallBack(Function<CommandManager, Boolean> fallBack) {
+    public Builder setFallBack(TriFunction<CommandSender, Command, String[], Boolean> fallBack) {
       this.fallBack = fallBack;
       return this;
     }
