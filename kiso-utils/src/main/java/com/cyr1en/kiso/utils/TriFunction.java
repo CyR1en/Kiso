@@ -1,6 +1,7 @@
 package com.cyr1en.kiso.utils;
 
 import java.util.Objects;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 @FunctionalInterface

@@ -44,11 +44,10 @@ import java.util.function.Function;
 
 public class CommandManager implements CommandExecutor {
 
-  private static final PluginDescriptionFile PLUGIN_DESCRIPTION_FILE;
+  private static PluginDescriptionFile PLUGIN_DESCRIPTION_FILE;
   private static final String DEFAULT_PREFIX;
 
   static {
-    PLUGIN_DESCRIPTION_FILE = resolveDescriptionFile();
     DEFAULT_PREFIX = "&6[&aKiso-Command&6] ";
   }
 
@@ -64,6 +63,7 @@ public class CommandManager implements CommandExecutor {
     commands = Lists.newArrayList();
     this.fallBack = fallBack;
 
+    PLUGIN_DESCRIPTION_FILE = resolveDescriptionFile();
     prefix = FastStrings.isBlank(prefix) ?
             (Objects.nonNull(PLUGIN_DESCRIPTION_FILE) ? makePrefix() : DEFAULT_PREFIX) : prefix ;
 
@@ -113,8 +113,8 @@ public class CommandManager implements CommandExecutor {
     return commands;
   }
 
-  private static PluginDescriptionFile resolveDescriptionFile() {
-    InputStream is = FileUtil.getResourceAsStream("plugin.yml");
+  private PluginDescriptionFile resolveDescriptionFile() {
+    InputStream is = plugin.getClass().getResourceAsStream("plugin.yml");
     PluginDescriptionFile pdl = null;
     try {
       pdl = new PluginDescriptionFile(is);
@@ -126,7 +126,7 @@ public class CommandManager implements CommandExecutor {
 
   public static class Builder {
     private JavaPlugin plugin;
-    private  TriFunction<CommandSender, Command, String[], Boolean> fallBack;
+    private TriFunction<CommandSender, Command, String[], Boolean> fallBack;
     private String prefix, playerOnlyMessage, commandInvalidMessage;
 
     public Builder() {
