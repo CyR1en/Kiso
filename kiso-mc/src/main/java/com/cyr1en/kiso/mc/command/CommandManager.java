@@ -40,7 +40,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 
 public class CommandManager implements CommandExecutor {
 
@@ -114,13 +113,7 @@ public class CommandManager implements CommandExecutor {
   }
 
   private PluginDescriptionFile resolveDescriptionFile() {
-    InputStream is = plugin.getClass().getResourceAsStream("plugin.yml");
-    PluginDescriptionFile pdl = null;
-    try {
-      pdl = new PluginDescriptionFile(is);
-    } catch (InvalidDescriptionException e) {
-      e.printStackTrace();
-    }
+    PluginDescriptionFile pdl = plugin.getDescription();
     return pdl;
   }
 
