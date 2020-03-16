@@ -19,7 +19,12 @@ public class KisoArray<T> {
     return false;
   }
 
-  public static <T> KisoArray<T> of(T[] array) {
-    return new KisoArray<>(array.getClass(), array.length);
+  public T[] getAsArray() {
+    return array;
+  }
+
+  @SafeVarargs
+  public static <T> KisoArray<T> of(T ... t) {
+    return new KisoArray<>(t.getClass(), t.length);
   }
 }

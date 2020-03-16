@@ -133,10 +133,19 @@ public class FastStrings {
     return count;
   }
 
+  /**
   public static String join(Object[] array, CharSequence delimiter) {
     StringJoiner joiner = new StringJoiner(delimiter);
     for (Object obj : array)
       joiner.add(String.valueOf(obj));
+    return joiner.toString();
+  }
+ **/
+
+  public static <T> String join(T[] objs, CharSequence delimiter) {
+    StringJoiner joiner = new StringJoiner(delimiter);
+    for(T t : objs)
+      joiner.add(String.valueOf(t));
     return joiner.toString();
   }
 
