@@ -51,7 +51,8 @@ public class UpdateChecker implements Listener {
       HttpURLConnection connection = buildConnection(Objects.requireNonNull(stringAsUrl()));
       InputStreamReader ir = new InputStreamReader(connection.getInputStream());
       BufferedReader br = new BufferedReader(ir);
-      version = version.parse(br.readLine());
+      String s = br.readLine();
+      version = version.parse(s);
     } catch (IOException e) {
       plugin.getLogger().log(Level.WARNING, "An error occurred while getting update data: ''{0}''!", e.getCause());
     }
@@ -59,9 +60,9 @@ public class UpdateChecker implements Listener {
   }
 
   public boolean newVersionAvailable() {
-    Version curr = new Version(plugin.getDescription().getVersion());
-    Version arg = getCurrVersion();
-    return arg.isNewerThan(curr);
+    Version running = new Version(plugin.getDescription().getVersion());
+    Version current = getCurrVersion();
+    return current.isNewerThan(running);
   }
 
   private URL stringAsUrl() {
@@ -178,7 +179,7 @@ public class UpdateChecker implements Listener {
     }
 
     public Version parse(String versionString) {
-      String[] split = versionString.split(".");
+      String[] split = versionString.split("\\.");
       assertVersionStringSize(split);
       setMajor(Integer.parseInt(split[0]));
       setMinor(Integer.parseInt(split[1]));
@@ -187,8 +188,8 @@ public class UpdateChecker implements Listener {
     }
 
     public boolean isNewerThan(Version version) {
-      if(getMajor() > version.getMajor()) return true;
-      if(getMinor() > version.getMinor()) return true;
+      if(getMajor() < version.getMajor()) return false;
+      else if(getMinor() < version.getMinor()) return false;
       return getPatch() > version.getPatch();
     }
 
@@ -206,4 +207,5 @@ public class UpdateChecker implements Listener {
               '}';
     }
   }
+
 }
