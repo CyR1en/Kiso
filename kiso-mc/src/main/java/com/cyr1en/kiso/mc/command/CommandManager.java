@@ -25,21 +25,18 @@
 package com.cyr1en.kiso.mc.command;
 
 import com.cyr1en.kiso.utils.FastStrings;
-import com.cyr1en.kiso.utils.FileUtil;
 import com.cyr1en.kiso.utils.KisoArray;
-import com.cyr1en.kiso.utils.TriFunction;
 import com.google.common.collect.Lists;
 import org.bukkit.command.*;
-import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 public class CommandManager implements CommandExecutor {
 
@@ -55,16 +52,16 @@ public class CommandManager implements CommandExecutor {
 
   private List<AbstractCommand> commands;
 
-  private TriFunction<CommandSender, Command, String[], Boolean> fallBack;
+  private Function<CommandContext, Boolean> fallBack;
 
-  private CommandManager(JavaPlugin plugin,  TriFunction<CommandSender, Command, String[], Boolean> fallBack, String prefix, String playerOnlyMessage, String commandInvalidMessage) {
+  private CommandManager(JavaPlugin plugin, Function<CommandContext, Boolean> fallBack, String prefix, String playerOnlyMessage, String commandInvalidMessage) {
     this.plugin = plugin;
     commands = Lists.newArrayList();
     this.fallBack = fallBack;
 
     PLUGIN_DESCRIPTION_FILE = resolveDescriptionFile();
     prefix = FastStrings.isBlank(prefix) ?
-            (Objects.nonNull(PLUGIN_DESCRIPTION_FILE) ? makePrefix() : DEFAULT_PREFIX) : prefix ;
+            (Objects.nonNull(PLUGIN_DESCRIPTION_FILE) ? makePrefix() : DEFAULT_PREFIX) : prefix;
 
     messenger = new CommandMessenger(prefix);
     messenger.setPlayerOnlyMessage(playerOnlyMessage);
@@ -94,7 +91,7 @@ public class CommandManager implements CommandExecutor {
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     if (args.length == 0)
-      return fallBack.apply(sender, command, args);
+      return fallBack.apply(new CommandContext(this, sender, command, args));
 
     for (AbstractCommand cmd : commands)
       if (args[0].equalsIgnoreCase(cmd.getName()) || KisoArray.of(cmd.getAlias()).contains(args[0])) {
@@ -119,12 +116,12 @@ public class CommandManager implements CommandExecutor {
 
   public static class Builder {
     private JavaPlugin plugin;
-    private TriFunction<CommandSender, Command, String[], Boolean> fallBack;
+    private Function<CommandContext, Boolean> fallBack;
     private String prefix, playerOnlyMessage, commandInvalidMessage;
 
     public Builder() {
       plugin = null;
-      fallBack = (cs, c, a) -> false;
+      fallBack = (context) -> false;
       prefix = playerOnlyMessage = commandInvalidMessage = "";
     }
 
@@ -133,7 +130,7 @@ public class CommandManager implements CommandExecutor {
       return this;
     }
 
-    public Builder setFallBack(TriFunction<CommandSender, Command, String[], Boolean> fallBack) {
+    public Builder setFallBack(Function<CommandContext, Boolean> fallBack) {
       this.fallBack = fallBack;
       return this;
     }
@@ -159,7 +156,7 @@ public class CommandManager implements CommandExecutor {
     }
 
     private void assertPluginNotNull() {
-      if(Objects.isNull(plugin)) throw new NullPointerException("JavaPlugin instance must be provided.");
+      if (Objects.isNull(plugin)) throw new NullPointerException("JavaPlugin instance must be provided.");
     }
   }
 }
