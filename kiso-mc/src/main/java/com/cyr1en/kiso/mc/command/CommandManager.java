@@ -27,6 +27,7 @@ package com.cyr1en.kiso.mc.command;
 import com.cyr1en.kiso.utils.FastStrings;
 import com.cyr1en.kiso.utils.KisoArray;
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import org.bukkit.command.*;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -47,10 +48,10 @@ public class CommandManager implements CommandExecutor {
     DEFAULT_PREFIX = "&6[&aKiso-Command&6] ";
   }
 
-  private JavaPlugin plugin;
-  private CommandMessenger messenger;
+  @Getter private JavaPlugin plugin;
+  @Getter private CommandMessenger messenger;
 
-  private List<AbstractCommand> commands;
+  @Getter private List<AbstractCommand> commands;
 
   private Function<CommandContext, Boolean> fallBack;
 
@@ -103,10 +104,6 @@ public class CommandManager implements CommandExecutor {
       } else
         messenger.sendMessage(sender, messenger.getCommandInvalidMessage());
     return false;
-  }
-
-  public List<AbstractCommand> getCommands() {
-    return commands;
   }
 
   private PluginDescriptionFile resolveDescriptionFile() {

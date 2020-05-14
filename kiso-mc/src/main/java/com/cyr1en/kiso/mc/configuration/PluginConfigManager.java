@@ -28,6 +28,7 @@ package com.cyr1en.kiso.mc.configuration;
 import com.cyr1en.kiso.mc.configuration.annotation.Configuration;
 import com.cyr1en.kiso.mc.configuration.annotation.Header;
 import com.cyr1en.kiso.mc.configuration.base.ConfigManager;
+import lombok.Getter;
 import org.atteo.classindex.ClassIndex;
 
 import java.lang.reflect.Constructor;
@@ -36,8 +37,10 @@ import java.util.HashMap;
 
 public class PluginConfigManager {
 
-    private ConfigManager manager;
-    private HashMap<Class<? extends BaseConfig>, Object> configs;
+    @Getter
+    private final ConfigManager manager;
+    @Getter
+    private final HashMap<Class<? extends BaseConfig>, Object> configs;
 
     public PluginConfigManager(ConfigManager manager) {
         this.manager = manager;
@@ -57,7 +60,7 @@ public class PluginConfigManager {
     }
 
     public final boolean setupConfigs() {
-        boolean isSafeToStart = true;
+        // boolean isSafeToStart = true;
         Iterable<Class<?>> annotatedClasses = ClassIndex.getAnnotated(Configuration.class);
         annotatedClasses.forEach(i -> {
             String[] header = i.isAnnotationPresent(Header.class) ? i.getAnnotation(Header.class).header(): new String[]{};
@@ -70,7 +73,7 @@ public class PluginConfigManager {
                 e.printStackTrace();
             }
         });
-        return isSafeToStart;
+        return true;
     }
 
 }
