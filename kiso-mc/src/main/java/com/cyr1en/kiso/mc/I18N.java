@@ -139,7 +139,7 @@ public class I18N {
     int placeHolderCount = StringUtils.countMatches(getProperty(key), "%s");
     if (placeHolderCount < arguments.length || placeHolderCount == 0)
       return getProperty(key);
-    return String.format(getProperty(key), (Object) arguments);
+    return String.format(getProperty(key), (Object[]) arguments);
   }
 
   public String getProperty(String key) {

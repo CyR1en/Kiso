@@ -4,6 +4,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public class ConfigManager {
 
@@ -31,8 +32,7 @@ public class ConfigManager {
             }
 
         }
-        Config config = new Config(this.getConfigContent(filePath), file, this.getCommentsNum(file), plugin);
-        return config;
+        return new Config(this.getConfigContent(filePath), file, this.getCommentsNum(file), plugin);
 
     }
 
@@ -205,7 +205,7 @@ public class ConfigManager {
             }
 
             String config = whole.toString();
-            InputStream configStream = new ByteArrayInputStream(config.getBytes(Charset.forName("UTF-8")));
+            InputStream configStream = new ByteArrayInputStream(config.getBytes(StandardCharsets.UTF_8));
 
             reader.close();
             return configStream;
