@@ -55,7 +55,7 @@ public class CommandManager implements CommandExecutor {
 
   private Function<CommandContext, Boolean> fallBack;
 
-  private CommandManager(JavaPlugin plugin, Function<CommandContext, Boolean> fallBack, String prefix, String playerOnlyMessage, String commandInvalidMessage) {
+  private CommandManager(JavaPlugin plugin, Function<CommandContext, Boolean> fallBack, String prefix, String playerOnlyMessage, String commandInvalidMessage, String noPermMessage) {
     this.plugin = plugin;
     commands = Lists.newArrayList();
     this.fallBack = fallBack;
@@ -67,6 +67,7 @@ public class CommandManager implements CommandExecutor {
     messenger = new CommandMessenger(prefix);
     messenger.setPlayerOnlyMessage(playerOnlyMessage);
     messenger.setCommandInvalidMessage(commandInvalidMessage);
+    messenger.setNoPermMessage(noPermMessage);
   }
 
   private String makePrefix() {
@@ -114,7 +115,7 @@ public class CommandManager implements CommandExecutor {
   public static class Builder {
     private JavaPlugin plugin;
     private Function<CommandContext, Boolean> fallBack;
-    private String prefix, playerOnlyMessage, commandInvalidMessage;
+    private String prefix, playerOnlyMessage, commandInvalidMessage, noPermMessage;
 
     public Builder() {
       plugin = null;
@@ -147,9 +148,14 @@ public class CommandManager implements CommandExecutor {
       return this;
     }
 
+    public Builder setNoPermMessage(String noPermMessage) {
+      this.noPermMessage = noPermMessage;
+      return this;
+    }
+
     public CommandManager build() {
       assertPluginNotNull();
-      return new CommandManager(plugin, fallBack, prefix, playerOnlyMessage, commandInvalidMessage);
+      return new CommandManager(plugin, fallBack, prefix, playerOnlyMessage, commandInvalidMessage, noPermMessage);
     }
 
     private void assertPluginNotNull() {

@@ -24,6 +24,7 @@
 
 package com.cyr1en.kiso.mc.command;
 
+import com.cyr1en.kiso.mc.I18N;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
