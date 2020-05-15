@@ -28,6 +28,7 @@ import com.cyr1en.kiso.utils.FastStrings;
 import com.cyr1en.kiso.utils.KisoArray;
 import com.google.common.collect.Lists;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.command.*;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -53,6 +54,7 @@ public class CommandManager implements CommandExecutor {
 
   @Getter private List<AbstractCommand> commands;
 
+  @Setter @Getter
   private Function<CommandContext, Boolean> fallBack;
 
   private CommandManager(JavaPlugin plugin, Function<CommandContext, Boolean> fallBack, String prefix, String playerOnlyMessage, String commandInvalidMessage, String noPermMessage) {
