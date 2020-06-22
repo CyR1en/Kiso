@@ -80,11 +80,6 @@ public class FastStrings {
     return true;
   }
 
-  public int get() {
-    long l = 100;
-    return (int) l;
-  }
-
   public static boolean charIsNumeric(int codepoint) {
     if (!Character.isValidCodePoint(codepoint))
       return false;
@@ -133,15 +128,6 @@ public class FastStrings {
     return count;
   }
 
-  /**
-  public static String join(Object[] array, CharSequence delimiter) {
-    StringJoiner joiner = new StringJoiner(delimiter);
-    for (Object obj : array)
-      joiner.add(String.valueOf(obj));
-    return joiner.toString();
-  }
- **/
-
   public static <T> String join(T[] objs, CharSequence delimiter) {
     StringJoiner joiner = new StringJoiner(delimiter);
     for(T t : objs)
@@ -151,10 +137,5 @@ public class FastStrings {
 
   public static boolean isEmpty(CharSequence charSequence) {
     return charSequence == null || charSequence.length() == 0;
-  }
-
-  public static void main(String[] args) {
-
-    System.out.println("-".codePointAt(0));
   }
 }
