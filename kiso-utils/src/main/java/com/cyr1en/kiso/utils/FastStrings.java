@@ -87,7 +87,7 @@ public class FastStrings {
   }
 
   /**
-   * Checks if a codepoint of a char is a 'non-printable' char.
+   * Checks if the codepoint of a {@link Character} is a 'non-printable' {@link Character}.
    *
    * <p>This method checks if the codepoint provided--from a
    * {@link Character}--is an escape sequence or either a space.</p>
@@ -128,6 +128,14 @@ public class FastStrings {
     return count;
   }
 
+  /**
+   * Joins every object in an {@link java.lang.reflect.Array}--with a given delimiter--into a string..
+   **
+   * @param objs The array that you want to join.
+   * @param delimiter The delimiter of the {@link String}.
+   * @param <T> Type of array.
+   * @return returns the joined {@link String}
+   */
   public static <T> String join(T[] objs, CharSequence delimiter) {
     StringJoiner joiner = new StringJoiner(delimiter);
     for(T t : objs)
@@ -135,6 +143,12 @@ public class FastStrings {
     return joiner.toString();
   }
 
+  /**
+   * Checks if the {@link CharSequence} is empty.
+   *
+   * @param charSequence The {@link CharSequence} that you want to check.
+   * @return True of the param is empty.
+   */
   public static boolean isEmpty(CharSequence charSequence) {
     return charSequence == null || charSequence.length() == 0;
   }
