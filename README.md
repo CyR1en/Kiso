@@ -1,5 +1,5 @@
 # Kiso
-Code that provides the backbone for my projects
+Personal Java lib for various projects
 
 # Getting Started
 Add Kiso to your project
