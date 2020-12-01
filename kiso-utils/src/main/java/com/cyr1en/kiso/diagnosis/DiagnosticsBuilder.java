@@ -1,7 +1,6 @@
-package com.cyr1en.mcutils.diagnosis;
+package com.cyr1en.kiso.diagnosis;
 
-import com.cyr1en.mcutils.diagnosis.impl.DiagnosticsImpl;
-import com.cyr1en.mcutils.logger.Logger;
+import com.cyr1en.kiso.diagnosis.impl.DiagnosticsImpl;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -42,8 +41,10 @@ public class DiagnosticsBuilder {
                     Map<Class<? extends IReporter>, IReporter> rList = ReportLoader.getReporters();
                     if(rList.containsKey(iReporter))
                         this.reporters.add(rList.get(iReporter));
-                    else
-                        Logger.err("Could not include " + iReporter.getSimpleName() + " to TypeDiagnosis.Partial; Was it registered?");
+                    else {
+                        //todo: impl logger
+                        //Logger.err("Could not include " + iReporter.getSimpleName() + " to TypeDiagnosis.Partial; Was it registered?");
+                    }
                 }
                 break;
         }

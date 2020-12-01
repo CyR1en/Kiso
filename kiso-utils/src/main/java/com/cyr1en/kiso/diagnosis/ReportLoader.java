@@ -1,6 +1,4 @@
-package com.cyr1en.mcutils.diagnosis;
-
-import com.cyr1en.mcutils.logger.Logger;
+package com.cyr1en.kiso.diagnosis;
 
 import java.util.HashMap;
 
@@ -12,7 +10,8 @@ public class ReportLoader {
         try {
             reporters.put(clazz, clazz.newInstance());
         } catch (InstantiationException | IllegalAccessException e) {
-            Logger.err("Error instantiating reporter class; is it private? Offender: " + clazz.getName());
+            //todo: impl logger
+            //Logger.err("Error instantiating reporter class; is it private? Offender: " + clazz.getName());
         }
     }
 

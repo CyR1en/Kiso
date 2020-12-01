@@ -1,4 +1,4 @@
-package com.cyr1en.mcutils.diagnosis;
+package com.cyr1en.kiso.diagnosis;
 
 import java.io.File;
 import java.util.LinkedList;

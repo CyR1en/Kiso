@@ -1,8 +1,8 @@
-package com.cyr1en.mcutils.diagnosis.impl;
+package com.cyr1en.kiso.diagnosis.impl;
 
-import com.cyr1en.mcutils.diagnosis.Diagnostics;
-import com.cyr1en.mcutils.diagnosis.IReporter;
-import com.cyr1en.mcutils.diagnosis.TypeDiagnosis;
+import com.cyr1en.kiso.diagnosis.Diagnostics;
+import com.cyr1en.kiso.diagnosis.IReporter;
+import com.cyr1en.kiso.diagnosis.TypeDiagnosis;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -50,8 +50,6 @@ public class DiagnosticsImpl implements Diagnostics {
         }
         return null;
     }
-
-
 
     private String buildReport() {
         final StringBuilder sb = new StringBuilder();

@@ -1,4 +1,4 @@
-package com.cyr1en.mcutils.diagnosis;
+package com.cyr1en.kiso.diagnosis;
 
 
 public enum TypeDiagnosis {
