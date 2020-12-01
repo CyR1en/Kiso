@@ -71,7 +71,6 @@ public class DiagnosticsBuilder {
             case ALL:
                 return true;
             case PARTIAL:
-                return reporters.size() != 0;
             case MANUAL:
                 return reporters.size() != 0;
             default:
