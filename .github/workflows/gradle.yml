@@ -26,6 +26,6 @@ jobs:
       run: ./gradlew build
     - name: Publish to Kakuno
       env:
-        KAKUNO_USER: ${{ secrets.KAKUNO_USER }}
+        KAKUNO_USER: ${{ secrets.KAKUNO_USER}}
         KAKUNO_TOKEN: ${{ secretes.KAKUNO_TOKEN }}
       run: ./gradlew publish
