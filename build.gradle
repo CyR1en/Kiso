@@ -25,6 +25,7 @@
 subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
+    apply plugin: 'maven-publish'
 
     group 'com.cyr1en'
     version = "1.0-SNAPSHOT"
@@ -34,6 +35,24 @@ subprojects {
 
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
+    }
+
+    publishing {
+        repositories {
+            maven {
+                name = "Kakuno"
+                url = uri("https://repo.cyr1en.com/snapshots")
+                credentials {
+                    username = System.getenv("KAKUNO_USER")
+                    password = System.getenv("KAKUNO_TOKEN")
+                }
+            }
+        }
+        publications {
+            gpr(MavenPublication) {
+                from(components.java)
+            }
+        }
     }
 
     repositories {
