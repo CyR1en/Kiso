@@ -142,6 +142,15 @@ public class SRegex {
     }
 
     /**
+     * Find substrings using regex. This will put all matched substrings to private instance of
+     * {@link List} List<String> {@see #resultList} resultList.
+     */
+    public SRegex find(Pattern p, String sample) {
+        this.sample = sample;
+        return find(p);
+    }
+
+    /**
      * Test regex pattern, find substrings using that regex, change the color of the results, and print the sample.
      * This will put all matched substrings to private instance of {@link List} List<String>
      * {@see #resultList} resultList.
