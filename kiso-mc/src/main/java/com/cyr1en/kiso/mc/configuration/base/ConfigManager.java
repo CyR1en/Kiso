@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 public class ConfigManager {
 
@@ -189,7 +190,7 @@ public class ConfigManager {
             String pluginName = this.getPluginName();
 
             StringBuilder whole = new StringBuilder("");
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+            BufferedReader reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8);
 
             while ((currentLine = reader.readLine()) != null) {
 
@@ -201,7 +202,6 @@ public class ConfigManager {
                 } else {
                     whole.append(currentLine + "\n");
                 }
-
             }
 
             String config = whole.toString();
