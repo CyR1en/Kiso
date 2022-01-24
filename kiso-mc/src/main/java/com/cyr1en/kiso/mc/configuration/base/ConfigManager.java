@@ -125,7 +125,7 @@ public class ConfigManager {
         try {
             String currentLine;
             StringBuilder config = new StringBuilder("");
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+            BufferedReader reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8);
 
             while ((currentLine = reader.readLine()) != null) {
                 config.append(currentLine + "\n");
@@ -232,7 +232,7 @@ public class ConfigManager {
             int comments = 0;
             String currentLine;
 
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+            BufferedReader reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8);
 
             while ((currentLine = reader.readLine()) != null) {
 
@@ -343,7 +343,7 @@ public class ConfigManager {
         String configuration = this.prepareConfigString(configString);
 
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            BufferedWriter writer = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8);
             writer.write(configuration);
             writer.flush();
             writer.close();
