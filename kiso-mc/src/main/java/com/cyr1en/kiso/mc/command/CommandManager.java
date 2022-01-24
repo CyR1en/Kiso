@@ -89,22 +89,23 @@ public class CommandManager implements CommandExecutor {
         Objects.requireNonNull(pluginCommand).setTabCompleter(commandTabCompleter);
     }
 
-  @Override
-  public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-    if (args.length == 0)
-      return fallBack.apply(new CommandContext(this, sender, command, args));
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length == 0)
+            return fallBack.apply(new CommandContext(this, sender, command, args));
 
-    for (AbstractCommand cmd : commands)
-      if (args[0].equalsIgnoreCase(cmd.getName()) || KisoArray.of(cmd.getAlias()).contains(args[0])) {
-        if (sender instanceof ConsoleCommandSender && cmd.isPlayerOnly()) {
-          messenger.sendMessage(sender, messenger.getPlayerOnlyMessage());
-          return false;
+        for (AbstractCommand cmd : commands) {
+            if (args[0].equalsIgnoreCase(cmd.getName()) || KisoArray.of(cmd.getAlias()).contains(args[0])) {
+                if (sender instanceof ConsoleCommandSender && cmd.isPlayerOnly()) {
+                    messenger.sendMessage(sender, messenger.getPlayerOnlyMessage());
+                    return false;
+                }
+                return cmd.onCommand(sender, Arrays.copyOfRange(args, 1, args.length));
+            }
         }
-        return cmd.onCommand(sender, Arrays.copyOfRange(args, 1, args.length));
-      } else
-        messenger.sendMessage(sender, messenger.getCommandInvalidMessage());
-    return false;
-  }
+        messenger.sendMessage(sender, String.format(messenger.getCommandInvalidMessage(), args[0]));
+        return false;
+    }
 
     private PluginDescriptionFile resolveDescriptionFile() {
         PluginDescriptionFile pdl = plugin.getDescription();
