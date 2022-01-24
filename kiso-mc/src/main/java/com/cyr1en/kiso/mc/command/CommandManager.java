@@ -27,8 +27,6 @@ package com.cyr1en.kiso.mc.command;
 import com.cyr1en.kiso.utils.FastStrings;
 import com.cyr1en.kiso.utils.KisoArray;
 import com.google.common.collect.Lists;
-import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.command.*;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -42,55 +40,54 @@ import java.util.function.Function;
 
 public class CommandManager implements CommandExecutor {
 
-  private static PluginDescriptionFile PLUGIN_DESCRIPTION_FILE;
-  private static final String DEFAULT_PREFIX;
+    private static PluginDescriptionFile PLUGIN_DESCRIPTION_FILE;
+    private static final String DEFAULT_PREFIX;
 
-  static {
-    DEFAULT_PREFIX = "&6[&aKiso-Command&6] ";
-  }
-
-  @Getter private JavaPlugin plugin;
-  @Getter private CommandMessenger messenger;
-
-  @Getter private List<AbstractCommand> commands;
-
-  @Setter @Getter
-  private Function<CommandContext, Boolean> fallBack;
-
-  private CommandManager(JavaPlugin plugin, Function<CommandContext, Boolean> fallBack, String prefix, String playerOnlyMessage, String commandInvalidMessage, String noPermMessage) {
-    this.plugin = plugin;
-    commands = Lists.newArrayList();
-    this.fallBack = fallBack;
-
-    PLUGIN_DESCRIPTION_FILE = resolveDescriptionFile();
-    prefix = FastStrings.isBlank(prefix) ?
-            (Objects.nonNull(PLUGIN_DESCRIPTION_FILE) ? makePrefix() : DEFAULT_PREFIX) : prefix;
-
-    messenger = new CommandMessenger(prefix);
-    messenger.setPlayerOnlyMessage(playerOnlyMessage);
-    messenger.setCommandInvalidMessage(commandInvalidMessage);
-    messenger.setNoPermMessage(noPermMessage);
-  }
-
-  private String makePrefix() {
-    String pluginName = PLUGIN_DESCRIPTION_FILE.getName();
-    return "&6[&a" + pluginName + "&6] ";
-  }
-
-  public void registerCommand(Class<? extends AbstractCommand> cmd) {
-    try {
-      Constructor c = cmd.getConstructor(JavaPlugin.class, CommandMessenger.class);
-      AbstractCommand command = (AbstractCommand) c.newInstance(plugin, messenger);
-      commands.add(command);
-    } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-      e.printStackTrace();
+    static {
+        DEFAULT_PREFIX = "&6[&aKiso-Command&6] ";
     }
-  }
 
-  public void registerTabCompleter(PluginCommand pluginCommand) {
-    CommandTabCompleter commandTabCompleter = new CommandTabCompleter(this);
-    Objects.requireNonNull(pluginCommand).setTabCompleter(commandTabCompleter);
-  }
+    private JavaPlugin plugin;
+    private CommandMessenger messenger;
+
+    private List<AbstractCommand> commands;
+    private Function<CommandContext, Boolean> fallBack;
+
+
+    private CommandManager(JavaPlugin plugin, Function<CommandContext, Boolean> fallBack, String prefix, String playerOnlyMessage, String commandInvalidMessage, String noPermMessage) {
+        this.plugin = plugin;
+        commands = Lists.newArrayList();
+        this.fallBack = fallBack;
+
+        PLUGIN_DESCRIPTION_FILE = resolveDescriptionFile();
+        prefix = FastStrings.isBlank(prefix) ?
+                (Objects.nonNull(PLUGIN_DESCRIPTION_FILE) ? makePrefix() : DEFAULT_PREFIX) : prefix;
+
+        messenger = new CommandMessenger(prefix);
+        messenger.setPlayerOnlyMessage(playerOnlyMessage);
+        messenger.setCommandInvalidMessage(commandInvalidMessage);
+        messenger.setNoPermMessage(noPermMessage);
+    }
+
+    private String makePrefix() {
+        String pluginName = PLUGIN_DESCRIPTION_FILE.getName();
+        return "&6[&a" + pluginName + "&6] ";
+    }
+
+    public void registerCommand(Class<? extends AbstractCommand> cmd) {
+        try {
+            Constructor c = cmd.getConstructor(JavaPlugin.class, CommandMessenger.class);
+            AbstractCommand command = (AbstractCommand) c.newInstance(plugin, messenger);
+            commands.add(command);
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void registerTabCompleter(PluginCommand pluginCommand) {
+        CommandTabCompleter commandTabCompleter = new CommandTabCompleter(this);
+        Objects.requireNonNull(pluginCommand).setTabCompleter(commandTabCompleter);
+    }
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -109,59 +106,82 @@ public class CommandManager implements CommandExecutor {
     return false;
   }
 
-  private PluginDescriptionFile resolveDescriptionFile() {
-    PluginDescriptionFile pdl = plugin.getDescription();
-    return pdl;
-  }
-
-  public static class Builder {
-    private JavaPlugin plugin;
-    private Function<CommandContext, Boolean> fallBack;
-    private String prefix, playerOnlyMessage, commandInvalidMessage, noPermMessage;
-
-    public Builder() {
-      plugin = null;
-      fallBack = (context) -> false;
-      prefix = playerOnlyMessage = commandInvalidMessage = "";
+    private PluginDescriptionFile resolveDescriptionFile() {
+        PluginDescriptionFile pdl = plugin.getDescription();
+        return pdl;
     }
 
-    public Builder plugin(JavaPlugin plugin) {
-      this.plugin = plugin;
-      return this;
+    public JavaPlugin getPlugin() {
+        return plugin;
     }
 
-    public Builder setFallBack(Function<CommandContext, Boolean> fallBack) {
-      this.fallBack = fallBack;
-      return this;
+    public CommandMessenger getMessenger() {
+        return messenger;
     }
 
-    public Builder setPrefix(String prefix) {
-      this.prefix = prefix;
-      return this;
+    public List<AbstractCommand> getCommands() {
+        return commands;
     }
 
-    public Builder setPlayerOnlyMessage(String playerOnlyMessage) {
-      this.playerOnlyMessage = playerOnlyMessage;
-      return this;
+
+    public Function<CommandContext, Boolean> getFallBack() {
+        return fallBack;
     }
 
-    public Builder setCommandInvalidMessage(String commandInvalidMessage) {
-      this.commandInvalidMessage = commandInvalidMessage;
-      return this;
+    public void setFallBack(Function<CommandContext, Boolean> fallBack) {
+        this.fallBack = fallBack;
     }
 
-    public Builder setNoPermMessage(String noPermMessage) {
-      this.noPermMessage = noPermMessage;
-      return this;
+
+    public static class Builder {
+        private JavaPlugin plugin;
+        private Function<CommandContext, Boolean> fallBack;
+        private String prefix, playerOnlyMessage, commandInvalidMessage, noPermMessage;
+
+        public Builder() {
+            plugin = null;
+            fallBack = (context) -> false;
+            prefix = playerOnlyMessage = commandInvalidMessage = "";
+        }
+
+        public Builder plugin(JavaPlugin plugin) {
+            this.plugin = plugin;
+            return this;
+        }
+
+        public Builder setFallBack(Function<CommandContext, Boolean> fallBack) {
+            this.fallBack = fallBack;
+            return this;
+        }
+
+        public Builder setPrefix(String prefix) {
+            this.prefix = prefix;
+            return this;
+        }
+
+        public Builder setPlayerOnlyMessage(String playerOnlyMessage) {
+            this.playerOnlyMessage = playerOnlyMessage;
+            return this;
+        }
+
+        public Builder setCommandInvalidMessage(String commandInvalidMessage) {
+            this.commandInvalidMessage = commandInvalidMessage;
+            return this;
+        }
+
+        public Builder setNoPermMessage(String noPermMessage) {
+            this.noPermMessage = noPermMessage;
+            return this;
+        }
+
+        public CommandManager build() {
+            assertPluginNotNull();
+            return new CommandManager(plugin, fallBack, prefix, playerOnlyMessage, commandInvalidMessage, noPermMessage);
+        }
+
+        private void assertPluginNotNull() {
+            if (Objects.isNull(plugin)) throw new NullPointerException("JavaPlugin instance must be provided.");
+        }
     }
 
-    public CommandManager build() {
-      assertPluginNotNull();
-      return new CommandManager(plugin, fallBack, prefix, playerOnlyMessage, commandInvalidMessage, noPermMessage);
-    }
-
-    private void assertPluginNotNull() {
-      if (Objects.isNull(plugin)) throw new NullPointerException("JavaPlugin instance must be provided.");
-    }
-  }
 }

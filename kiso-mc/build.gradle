@@ -12,9 +12,6 @@ dependencies {
     compile 'org.atteo.classindex:classindex:3.6'
     annotationProcessor 'org.atteo.classindex:classindex:3.6'
 
-    compileOnly 'org.projectlombok:lombok:1.18.12'
-    annotationProcessor 'org.projectlombok:lombok:1.18.12'
-
     compileOnly project(':kiso-utils')
 
     compileOnly 'org.spigotmc:spigot-api:1.15.1-R0.1-SNAPSHOT'

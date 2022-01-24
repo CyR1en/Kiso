@@ -28,7 +28,6 @@ package com.cyr1en.kiso.mc.configuration;
 import com.cyr1en.kiso.mc.configuration.annotation.Configuration;
 import com.cyr1en.kiso.mc.configuration.annotation.Header;
 import com.cyr1en.kiso.mc.configuration.base.ConfigManager;
-import lombok.Getter;
 import org.atteo.classindex.ClassIndex;
 
 import java.lang.reflect.Constructor;
@@ -37,9 +36,8 @@ import java.util.HashMap;
 
 public class PluginConfigManager {
 
-    @Getter
     private final ConfigManager manager;
-    @Getter
+
     private final HashMap<Class<? extends BaseConfig>, Object> configs;
 
     public PluginConfigManager(ConfigManager manager) {
@@ -76,4 +74,11 @@ public class PluginConfigManager {
         return true;
     }
 
+    public ConfigManager getManager() {
+        return manager;
+    }
+
+    public HashMap<Class<? extends BaseConfig>, Object> getConfigs() {
+        return configs;
+    }
 }
