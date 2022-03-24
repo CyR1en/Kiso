@@ -52,7 +52,7 @@ public class UpdateChecker implements Listener {
             InputStreamReader ir = new InputStreamReader(connection.getInputStream());
             BufferedReader br = new BufferedReader(ir);
             String s = br.readLine();
-            version = version.parse(s);
+            version = Version.parse(s);
         } catch (IOException e) {
             plugin.getLogger().log(Level.WARNING, "An error occurred while getting update data: ''{0}''!", e.getCause());
         }
@@ -60,7 +60,7 @@ public class UpdateChecker implements Listener {
     }
 
     public boolean newVersionAvailable() {
-        Version running = new Version(plugin.getDescription().getVersion());
+        Version running = Version.parse(plugin.getDescription().getVersion());
         Version current = getCurrVersion();
         return current.isNewerThan(running);
     }
@@ -122,96 +122,4 @@ public class UpdateChecker implements Listener {
             }
         }
     }
-
-    /**
-     * Class for representing the version of the plugin.
-     *
-     * <p>This class will follow the conventions of Semantic versioning.</p>
-     *
-     * @see <a href="https://semver.org/">https://semver.org/</a>
-     */
-    public class Version {
-        private int major;
-        private int minor;
-        private int patch;
-
-        public Version(int major, int minor, int patch) {
-            this.major = major;
-            this.minor = minor;
-            this.patch = patch;
-        }
-
-        public Version(String versionString) {
-            this();
-            parse(versionString);
-        }
-
-        public Version() {
-            this(0, 0, 0);
-        }
-
-        public int getMajor() {
-            return major;
-        }
-
-        public void setMajor(int major) {
-            this.major = major;
-        }
-
-        public int getMinor() {
-            return minor;
-        }
-
-        public void setMinor(int minor) {
-            this.minor = minor;
-        }
-
-        public int getPatch() {
-            return patch;
-        }
-
-        public void setPatch(int patch) {
-            this.patch = patch;
-        }
-
-        public String asString() {
-            return getMajor() + "." + getMinor() + "." + getPatch();
-        }
-
-        public Version parse(String versionString) {
-            String[] split = versionString.split("\\.");
-            assertVersionStringSize(split);
-            setMajor(Integer.parseInt(split[0]));
-            setMinor(Integer.parseInt(split[1]));
-            setPatch(Integer.parseInt(split[2]));
-            return this;
-        }
-
-        public boolean isNewerThan(Version version) {
-            if (getMajor() > version.getMajor())
-                return true;
-            else if (getMajor() < version.getMajor())
-                return false;
-            else if (getMinor() > version.getMinor())
-                return true;
-            else if (getMinor() < version.getMinor())
-                return false;
-            return getPatch() > version.getPatch();
-        }
-
-        private void assertVersionStringSize(String[] strings) {
-            if (strings.length != 3)
-                throw new IllegalArgumentException("The string of version must contain a major, minor, and patch.");
-        }
-
-        @Override
-        public String toString() {
-            return "Version{" +
-                    "major=" + major +
-                    ", minor=" + minor +
-                    ", patch=" + patch +
-                    '}';
-        }
-    }
-
 }
