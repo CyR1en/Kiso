@@ -91,9 +91,13 @@ public class Version {
     public static Version parse(String versionString) {
         String[] split = versionString.split("\\.");
         if (split.length == 0) return new Version();
-        List<Integer> parsed = Arrays.stream(split).map(Integer::parseInt).collect(Collectors.toList());
-        while (parsed.size() < 3) parsed.add(0);
-        return new Version(parsed.get(0), parsed.get(1), parsed.get(2));
+        try {
+            List<Integer> parsed = Arrays.stream(split).map(Integer::parseInt).collect(Collectors.toList());
+            while (parsed.size() < 3) parsed.add(0);
+            return new Version(parsed.get(0), parsed.get(1), parsed.get(2));
+        } catch (NullPointerException e) {
+            return new Version(0,0,0);
+        }
     }
 
     public boolean isNewerThan(Version version) {
